@@ -1,7 +1,7 @@
 module DataStructureSandbox
   # See http://www.cs.cmu.edu/~adamchik/15-121/lectures/Binary%20Heaps/heaps.html
 
-  # TODO - rename to MinHeap
+  # TODO - rename to MinHeap, or maybe make MinHeap a subclass which specifies the sorting operators
   class BinaryHeap
 
     attr_accessor :guts
