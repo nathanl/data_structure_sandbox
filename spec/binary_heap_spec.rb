@@ -12,6 +12,7 @@ describe DSS::BinaryHeap do
   end
 
   xit "always returns the minimum item" do
+    pending "fix infinite loop!"
     heap = described_class.new(unsorted)
     values = 7.times.map { heap.delete_min }
     expect(values).to eq(unsorted.compact.sort)

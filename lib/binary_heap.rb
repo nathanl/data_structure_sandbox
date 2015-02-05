@@ -37,6 +37,53 @@ module DataStructureSandbox
 
     end
 
+    def delete_min
+      min = guts[1]
+
+      sorting_item = guts[1] = guts.pop
+
+      sorting_item_index = 1
+
+      puts guts.inspect
+      while any_children?(sorting_item_index)
+        smallest_child = smallest_child_of(sorting_item_index)
+
+        # if parent is larger than a child element,
+        # swap with that element, then repeat this process at the next level
+        puts "sorting item is #{sorting_item.inspect}, sc #{smallest_child.inspect}"
+        if sorting_item > smallest_child[0]
+          swap_indices(sorting_item_index, smallest_child[1])
+          sorting_item_index = smallest_child[1]
+        end
+      end
+
+      min
+    end
+
+    def any_children?(index)
+      return true if guts[left_child_index(index)]
+      return true if guts[right_child_index(index)]
+      false
+    end
+
+    def smallest_child_of(index)
+      left_child        = [guts[left_child_index(index)], left_child_index(index)]
+      right_child       = [guts[right_child_index(index)], right_child_index(index)]
+      [left_child, right_child].tap {|things| puts "before select: #{things.inspect}"}.select {
+        |val, i| !val.nil?
+      }.min_by { |val, i| val }
+    end
+
+    def left_child_index(index)
+      index * 2
+    end
+
+    def right_child_index(index)
+      (index * 2) + 1
+    end
+
+    private
+
     def swap_indices(one, other)
       guts[one], guts[other] = [guts[other], guts[one]]
     end
