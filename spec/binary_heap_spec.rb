@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe DSS::BinaryHeap do
+describe DSS::MinHeap do
 
   let(:klass)    { described_class }
   let(:unsorted) { [6, 7, 12, 10, 15, 17, 5] }
@@ -19,9 +19,21 @@ describe DSS::BinaryHeap do
   end
 
   it "can be used for heapsort" do
-    nums = (1..1_000).to_a.shuffle
+    nums = Array.new(1_000) { rand(1...500) }
     sorted = klass.new(nums).delete_all
     expect(sorted).to eq(nums.sort)
+  end
+
+end
+
+describe DSS::MaxHeap do
+
+  let(:klass)    { described_class }
+
+  it "can be used for a reverse heapsort" do
+    nums = Array.new(1_000) { rand(1...500) }
+    sorted = klass.new(nums).delete_all
+    expect(sorted).to eq(nums.sort.reverse)
   end
 
 end

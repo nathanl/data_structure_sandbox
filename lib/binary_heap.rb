@@ -1,7 +1,6 @@
 module DataStructureSandbox
   # See http://www.cs.cmu.edu/~adamchik/15-121/lectures/Binary%20Heaps/heaps.html
 
-  # TODO - rename to MinHeap, or maybe make MinHeap a subclass which specifies the sorting operators
   class BinaryHeap
 
     attr_accessor :guts
@@ -23,13 +22,10 @@ module DataStructureSandbox
     def insert(item)
       guts << item
 
-      # percolate up
-      # compare with parent. If parent < item, swap them.
-      # repeat
       item_index   = guts.size - 1
       parent_index = item_index / 2
 
-      while !guts[parent_index].nil? && item < guts[parent_index]
+      while !guts[parent_index].nil? && sorts_higher?(item, guts[parent_index])
         swap_indices(item_index, parent_index)
         item_index   = parent_index
         parent_index = item_index / 2
@@ -51,13 +47,13 @@ module DataStructureSandbox
         sorting_item_index = 1
 
         while any_children?(sorting_item_index)
-          smallest_child = smallest_child_of(sorting_item_index)
+          highest_sorting_child = highest_sorting_child_of(sorting_item_index)
 
           # if parent is larger than a child element,
           # swap with that element, then repeat this process at the next level
-          if sorting_item > smallest_child[0]
-            swap_indices(sorting_item_index, smallest_child[1])
-            sorting_item_index = smallest_child[1]
+          if sorts_lower?(sorting_item, highest_sorting_child[0])
+            swap_indices(sorting_item_index, highest_sorting_child[1])
+            sorting_item_index = highest_sorting_child[1]
           else
             break
           end
@@ -83,12 +79,12 @@ module DataStructureSandbox
       false
     end
 
-    def smallest_child_of(index)
+    def highest_sorting_child_of(index)
       left_child        = [guts[left_child_index(index)], left_child_index(index)]
       right_child       = [guts[right_child_index(index)], right_child_index(index)]
       [left_child, right_child].select {
         |val, i| !val.nil?
-      }.min_by { |val, i| val }
+      }.public_send(highest_sorting_child_method) { |val, i| val }
     end
 
     def left_child_index(index)
@@ -101,6 +97,50 @@ module DataStructureSandbox
 
     def swap_indices(one, other)
       guts[one], guts[other] = [guts[other], guts[one]]
+    end
+
+    def sorts_higher?(val, other_val)
+      raise NotImplementedError
+    end
+
+    def sorts_lower?(val, other_val)
+      raise NotImplementedError
+    end
+
+    def highest_sorting_child_method
+      raise NotImplementedError
+    end
+
+  end
+
+  class MinHeap < BinaryHeap
+
+    def sorts_higher?(val, other_val)
+      val < other_val
+    end
+
+    def sorts_lower?(val, other_val)
+      val > other_val
+    end
+
+    def highest_sorting_child_method
+      :min_by
+    end
+
+  end
+
+  class MaxHeap < BinaryHeap
+
+    def sorts_higher?(val, other_val)
+      val > other_val
+    end
+
+    def sorts_lower?(val, other_val)
+      val < other_val
+    end
+
+    def highest_sorting_child_method
+      :max_by
     end
 
   end
