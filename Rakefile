@@ -3,14 +3,6 @@ require "bundler/gem_tasks"
 # I don't want to release this publicly
 Rake::Task["release"].clear
 
-require "rspec/core/rake_task"
-
-desc "Run the specs in documentation format"
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.rspec_opts = "--format documentation"
-end
-
-task :default => :spec
 
 task :require_gem do
   require_relative "lib/data_structure_sandbox"
@@ -26,3 +18,9 @@ task :console => :require_gem do
   IRB.start
 end
 
+task :spec do
+  # Relies on minitest/autotest
+  Dir.glob("./spec/**/*_spec.rb").each { |file| require file}
+end
+
+task :default => :spec

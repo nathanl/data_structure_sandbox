@@ -1,13 +1,13 @@
-require "spec_helper"
+require_relative "helper"
 
 describe DSS::MinHeap do
 
-  let(:klass)    { described_class }
+  let(:klass)    { DSS::MinHeap }
   let(:unsorted) { [6, 7, 12, 10, 15, 17, 5] }
 
   it "arranges the values internally" do
     heap = klass.new(unsorted)
-    expect(heap.guts).to eq(
+    heap.guts.must_equal(
       [nil, 5, 7, 6, 10, 15, 17, 12]
     )
   end
@@ -15,25 +15,25 @@ describe DSS::MinHeap do
   it "always returns the minimum item" do
     heap = klass.new(unsorted)
     values = 7.times.map { heap.delete_min }
-    expect(values).to eq(unsorted.compact.sort)
+    values.must_equal(unsorted.compact.sort)
   end
 
   it "can be used for heapsort" do
     nums = Array.new(1_000) { rand(1...500) }
     sorted = klass.new(nums).delete_all
-    expect(sorted).to eq(nums.sort)
+    sorted.must_equal(nums.sort)
   end
 
 end
 
 describe DSS::MaxHeap do
 
-  let(:klass)    { described_class }
+  let(:klass)    { DSS::MaxHeap }
 
   it "can be used for a reverse heapsort" do
     nums = Array.new(1_000) { rand(1...500) }
     sorted = klass.new(nums).delete_all
-    expect(sorted).to eq(nums.sort.reverse)
+    sorted.must_equal(nums.sort.reverse)
   end
 
 end
