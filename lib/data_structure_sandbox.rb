@@ -4,6 +4,4 @@ module DataStructureSandbox
   # Your code goes here...
 end
 
-DSS = DataStructureSandbox
-
 require "binary_heap"

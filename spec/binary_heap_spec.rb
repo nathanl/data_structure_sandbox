@@ -1,8 +1,10 @@
 require_relative "helper"
+require "binary_heap"
 
-describe DSS::MinHeap do
 
-  let(:klass)    { DSS::MinHeap }
+describe DataStructureSandbox::MinHeap do
+
+  let(:klass)    { DataStructureSandbox::MinHeap }
   let(:unsorted) { [6, 7, 12, 10, 15, 17, 5] }
 
   it "arranges the values internally" do
@@ -26,9 +28,9 @@ describe DSS::MinHeap do
 
 end
 
-describe DSS::MaxHeap do
+describe DataStructureSandbox::MaxHeap do
 
-  let(:klass)    { DSS::MaxHeap }
+  let(:klass)    { DataStructureSandbox::MaxHeap }
 
   it "can be used for a reverse heapsort" do
     nums = Array.new(1_000) { rand(1...500) }
